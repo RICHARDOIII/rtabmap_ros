@@ -42,10 +42,10 @@
   <arg name="ground_truth_base_frame_id" default=""/>  <!-- e.g., "tracker", a fake frame matching the frame "frame_id" (but on different TF tree) -->
   <arg name="namespace"               default="rtabmap"/>
   <arg name="database_path"           default="~/.ros/rtabmap.db"/>
-  <arg name="queue_size"              default="10"/>
+  <arg name="queue_size"              default="15"/>
   <arg name="wait_for_transform"      default="0.2"/>
   <arg name="args"                    default=""/>              <!-- delete_db_on_start, udebug -->
-  <arg name="rtabmap_args"            default="$(arg args)"/>   <!-- deprecated, use "args" argument -->
+  <arg name="rtabmap_args"            default="--delete_db_on_start"/>   <!-- deprecated, use "args" argument -->
   <arg name="launch_prefix"           default=""/>              <!-- for debugging purpose, it fills launch-prefix tag of the nodes -->
   <arg name="output"                  default="screen"/>        <!-- Control node output (screen or log) -->
   <arg name="publish_tf_map"          default="true"/>
@@ -72,11 +72,9 @@
   <arg name="approx_rgbd_sync"        default="true"/>          <!-- false=exact synchronization -->
   <arg name="subscribe_rgbd"          default="$(arg rgbd_sync)"/>
   <arg name="rgbd_topic"              default="rgbd_image" />
-  <arg name="depth_scale"             default="1.0" />         <!-- Deprecated, use rgbd_depth_scale instead -->
-  <arg name="rgbd_depth_scale"        default="$(arg depth_scale)" />
-  <arg name="rgbd_decimation"         default="1" />
+  <arg name="depth_scale"             default="1.0" />
   
-  <arg name="compressed"              default="false"/>         <!-- If you want to subscribe to compressed image topics -->
+  <arg name="compressed"              default="true"/>         <!-- If you want to subscribe to compressed image topics -->
   <arg name="rgb_image_transport"     default="compressed"/>    <!-- Common types: compressed, theora (see "rosrun image_transport list_transports") -->
   <arg name="depth_image_transport"   default="compressedDepth"/>  <!-- Depth compatible types: compressedDepth (see "rosrun image_transport list_transports") -->
    
@@ -101,12 +99,10 @@
   <arg name="odom_guess_min_rotation"    default="0"/> 
   <arg name="imu_topic"                default="/imu/data"/>          <!-- only used with VIO approaches -->
   <arg name="wait_imu_to_init"         default="false"/>
-  
-  <arg name="scan_cloud_assembling"              default="false"/>
-  <arg name="scan_cloud_assembling_time"         default="1"/>
-  <arg name="scan_cloud_assembling_fixed_frame"  default=""/>
-  <arg name="scan_cloud_assembling_voxel_size"   default="0.05"/>
-  
+  <arg name="Odom/ResetCountdown"        default="3"/>
+  <arg name="Rtabmap/StartNewMapOnLoopClosure" default="false"/>
+
+
   <arg name="subscribe_user_data"      default="false"/>             <!-- user data synchronized subscription -->
   <arg name="user_data_topic"          default="/user_data"/>
   <arg name="user_data_async_topic"    default="/user_data_async" /> <!-- user data async subscription (rate should be lower than map update rate) -->
@@ -148,8 +144,7 @@
           <remap from="rgbd_image"      to="$(arg rgbd_topic_relay)"/>
           <param name="approx_sync"     type="bool"   value="$(arg approx_rgbd_sync)"/>
           <param name="queue_size"      type="int"    value="$(arg queue_size)"/>
-          <param name="depth_scale"     type="double" value="$(arg rgbd_depth_scale)"/>
-          <param name="decimation"     type="double" value="$(arg rgbd_decimation)"/>
+          <param name="depth_scale"     type="double" value="$(arg depth_scale)"/>
         </node>
       </group>
     </group>
@@ -196,7 +191,9 @@
           <remap from="rgbd_image"      to="$(arg rgbd_topic_relay)"/>
           <remap from="odom"            to="$(arg odom_topic)"/>
           <remap from="imu"             to="$(arg imu_topic)"/>
-      
+          <param name="Odom/Strategy" value="1"/>
+	  <param name="GFTT/MinDistance" type="string" value="15"/> <!-- default 5 pixels -->
+          <param name="Odom/ResetCountdown"         type="int"    value="$(arg Odom/ResetCountdown)"/>
           <param name="frame_id"                    type="string" value="$(arg frame_id)"/>
           <param name="odom_frame_id"               type="string" value="$(arg vo_frame_id)"/>
           <param name="publish_tf"                  type="bool"   value="$(arg publish_tf_odom)"/>
@@ -262,16 +259,6 @@
       <param name="guess_min_rotation"          type="double" value="$(arg odom_guess_min_rotation)"/>
       <param name="scan_cloud_max_points"       type="int"    value="$(arg scan_cloud_max_points)"/>
     </node>
-    
-    <node if="$(arg scan_cloud_assembling)" pkg="rtabmap_ros" type="point_cloud_assembler" name="point_cloud_assembler" output="screen">
-      <remap     if="$(arg scan_cloud_filtered)" from="cloud" to="odom_filtered_input_scan"/>
-      <remap unless="$(arg scan_cloud_filtered)" from="cloud" to="$(arg scan_cloud_topic)"/>
-
-      <remap from="odom"            to="$(arg odom_topic)"/>
-      <param name="assembling_time" type="double" value="$(arg scan_cloud_assembling_time)"/>
-      <param name="fixed_frame_id"  type="string" value="$(arg scan_cloud_assembling_fixed_frame)"/>
-      <param name="voxel_size"      type="double" value="$(arg scan_cloud_assembling_voxel_size)"/>
-    </node>
   
     <!-- Visual SLAM (robot side) -->
     <!-- args: "delete_db_on_start" and "udebug" -->
@@ -303,7 +290,7 @@
       <param name="scan_cloud_max_points"     type="int" value="$(arg scan_cloud_max_points)"/>
       <param name="landmark_linear_variance"   type="double" value="$(arg tag_linear_variance)"/>
       <param name="landmark_angular_variance"  type="double" value="$(arg tag_angular_variance)"/>      
-      
+      <param name="Rtabmap/StartNewMapOnLoopClosure" type="bool" value="$(arg Rtabmap/StartNewMapOnLoopClosure)"/>
       <remap from="rgb/image"       to="$(arg rgb_topic_relay)"/>
       <remap from="depth/image"     to="$(arg depth_topic_relay)"/>
       <remap from="rgb/camera_info" to="$(arg camera_info_topic)"/>
@@ -316,9 +303,8 @@
       <remap from="right/camera_info"      to="$(arg right_camera_info_topic)"/>
       
       <remap from="scan"                   to="$(arg scan_topic)"/>
-      <remap if="$(eval scan_cloud_assembling)" from="scan_cloud" to="assembled_cloud"/>
-      <remap if="$(eval scan_cloud_filtered and not scan_cloud_assembling)" from="scan_cloud" to="odom_filtered_input_scan"/>
-      <remap if="$(eval not scan_cloud_filtered and not scan_cloud_assembling)" from="scan_cloud" to="$(arg scan_cloud_topic)"/>
+      <remap     if="$(arg scan_cloud_filtered)" from="scan_cloud" to="odom_filtered_input_scan"/>
+      <remap unless="$(arg scan_cloud_filtered)" from="scan_cloud" to="$(arg scan_cloud_topic)"/>
       <remap from="user_data"              to="$(arg user_data_topic)"/>
       <remap from="user_data_async"        to="$(arg user_data_async_topic)"/>
       <remap from="gps/fix"                to="$(arg gps_topic)"/>
@@ -366,7 +352,7 @@
     </node>
   
   </group>
-  
+
   <!-- Visualization RVIZ -->
   <node if="$(arg rviz)" pkg="rviz" type="rviz" name="rviz" args="-d $(arg rviz_cfg)"/>
   <node if="$(arg rviz)" pkg="nodelet" type="nodelet" name="points_xyzrgb" args="standalone rtabmap_ros/point_cloud_xyzrgb" output="$(arg output)">
