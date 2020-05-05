@@ -101,7 +101,7 @@
   <arg name="wait_imu_to_init"         default="false"/>
   <arg name="Odom/ResetCountdown"        default="3"/>
   <arg name="Rtabmap/StartNewMapOnLoopClosure" default="false"/>
-
+  <arg name="GFTT/MinDistance" default="5"/>
 
   <arg name="subscribe_user_data"      default="false"/>             <!-- user data synchronized subscription -->
   <arg name="user_data_topic"          default="/user_data"/>
@@ -192,7 +192,7 @@
           <remap from="odom"            to="$(arg odom_topic)"/>
           <remap from="imu"             to="$(arg imu_topic)"/>
           <param name="Odom/Strategy" value="1"/>
-	  <param name="GFTT/MinDistance" type="string" value="15"/> <!-- default 5 pixels -->
+	        <param name="GFTT/MinDistance" type="string" value="$(arg GFTT/MinDistance)"/> <!-- default 5 pixels -->
           <param name="Odom/ResetCountdown"         type="int"    value="$(arg Odom/ResetCountdown)"/>
           <param name="frame_id"                    type="string" value="$(arg frame_id)"/>
           <param name="odom_frame_id"               type="string" value="$(arg vo_frame_id)"/>
