@@ -1,6 +1,6 @@
 from tkinter import *
 
-def donothind():
+def donothing():
     pass
 def replace_queue():
     s=disp_["text"]
@@ -113,8 +113,26 @@ def camera_info_topicadd():
     if  camera_info_topic_entry.get() != "":
         added=f" camera_info_topic:={camera_info_topic_entry.get()} "+" "
         disp_["text"]=" ".join(arg)+added
-###############ODom #############
+###############Odom #############
+def OdomRadd():
+    s=disp_["text"]
+    arg= s.split()
+    for x in arg:
+        if "Odom/ResetCountdown:=" in x:
+            arg.remove(x)
+    if  OdomR_entry.get() != "":
+        added=f" Odom/ResetCountdown:={OdomR_entry.get()} "+" "
+        disp_["text"]=" ".join(arg)+added
 
+def GFTTadd():
+    s=disp_["text"]
+    arg= s.split()
+    for x in arg:
+        if "GFTT/MinDistance:=" in x:
+            arg.remove(x)
+    if  GFTT_entry.get() != "":
+        added=f" GFTT/MinDistance:={GFTT_entry.get()} "+" "
+        disp_["text"]=" ".join(arg)+added
 ########################Depth
 def depth_topicadd():
     s=disp_["text"]
@@ -238,6 +256,25 @@ camera_info_topic_dlabel = Label(master=cameraFrame,wraplength=220, text= "/came
 camera_info_topic_dlabel.grid(row=4, column=3, sticky="ew", padx=5, pady=5)
 
 ################################ ODOM ###############33333
+# Odom/ResetCountdown
+OdomR_entry= Entry(master=odomFrame,width=10)
+OdomR_entry.grid(row=1, column=0, sticky="ew", padx=5, pady=5)
+OdomRlabel = Label(master=odomFrame, text= " Odom/ResetCountdown ")
+OdomRlabel.grid(row=1, column=1, sticky="ew", padx=5, pady=5)
+OdomR_convert = Button(master=odomFrame,text="Change",command=OdomRadd)
+OdomR_convert.grid(row=1, column=2, sticky="ew", padx=5, pady=5)
+OdomR_dlabel = Label(master=odomFrame,wraplength=220, text= " Frames dropped allowed before Map reset")
+OdomR_dlabel.grid(row=1, column=3, sticky="ew", padx=5, pady=5)
+#GFTT/MinDistance
+
+GFTT_entry= Entry(master=odomFrame,width=10)
+GFTT_entry.grid(row=2, column=0, sticky="ew", padx=5, pady=5)
+GFTTlabel = Label(master=odomFrame, text= " GFTT/MinDistance ")
+GFTTlabel.grid(row=2, column=1, sticky="ew", padx=5, pady=5)
+GFTT_convert = Button(master=odomFrame,text="Change",command=GFTTadd)
+GFTT_convert.grid(row=2, column=2, sticky="ew", padx=5, pady=5)
+GFTT_dlabel = Label(master=odomFrame,wraplength=220, text= " Changes how refined the pointcloud")
+GFTT_dlabel.grid(row=2, column=3, sticky="ew", padx=5, pady=5)
 
 ###################### DEPTH ##########
 depth_topic_entry= Entry(master=depthFrame,width=10)
@@ -254,6 +291,6 @@ depth_topic_dlabel.grid(row=1, column=3, sticky="ew", padx=5, pady=5)
 
 
 ################################## DISP FRAME #########################
-disp_= Label(master= dispFrame, wraplength=600, text =" roslaunch rtabmap_ros rtabmap.launch")
+disp_= Label(master= dispFrame, wraplength=550, text =" roslaunch rtabmap_ros rtabmap.launch")
 disp_.grid(row=1, column=0, sticky="ew", padx=5, pady=5)
 root.mainloop()
