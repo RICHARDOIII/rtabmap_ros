@@ -101,8 +101,8 @@ def rgb_topicadd():
     for x in arg:
         if "rgb_topic:=" in x:
             arg.remove(x)
-    if  que_entry.get() != "":
-        added=f" rgb_topic:={que_entry.get()} "+" "
+    if  rgb_topic_entry.get() != "":
+        added=f" rgb_topic:={rgb_topic_entry.get()} "+" "
         disp_["text"]=" ".join(arg)+added
 def camera_info_topicadd():
     s=disp_["text"]
@@ -110,8 +110,8 @@ def camera_info_topicadd():
     for x in arg:
         if "camera_info_topic:=" in x:
             arg.remove(x)
-    if  que_entry.get() != "":
-        added=f" camera_info_topic:={que_entry.get()} "+" "
+    if  camera_info_topic_entry.get() != "":
+        added=f" camera_info_topic:={camera_info_topic_entry.get()} "+" "
         disp_["text"]=" ".join(arg)+added
 ###############ODom #############
 
@@ -122,8 +122,8 @@ def depth_topicadd():
     for x in arg:
         if "depth_topic:=" in x:
             arg.remove(x)
-    if  que_entry.get() != "":
-        added=f" depth_topic:={que_entry.get()} "+" "
+    if  depth_topic_entry.get() != "":
+        added=f" depth_topic:={depth_topic_entry.get()} "+" "
         disp_["text"]=" ".join(arg)+added
 
 root = Tk()
@@ -225,7 +225,7 @@ rgb_topiclabel.grid(row=3, column=1, sticky="ew", padx=5, pady=5)
 rgb_topic_convert = Button(master=cameraFrame,text="Change",command=rgb_topicadd)
 rgb_topic_convert.grid(row=3, column=2, sticky="ew", padx=5, pady=5)
 rgb_dlabel = Label(master=cameraFrame,wraplength=220, text= "/camera/throttled/rgb/image_rect_color if rbgd_sync:=false on camera")
-rgb_dlabel.grid(row=3, column=4, sticky="ew", padx=5, pady=5)
+rgb_dlabel.grid(row=3, column=3, sticky="ew", padx=5, pady=5)
 
 #camera_info
 camera_info_topic_entry= Entry(master=cameraFrame,width=10)
@@ -242,7 +242,7 @@ camera_info_topic_dlabel.grid(row=4, column=3, sticky="ew", padx=5, pady=5)
 ###################### DEPTH ##########
 depth_topic_entry= Entry(master=depthFrame,width=10)
 depth_topic_entry.grid(row=1, column=0, sticky="ew", padx=5, pady=5)
-depth_topiclabel = Label(master=depthFrame, text= " camera_info_topic ")
+depth_topiclabel = Label(master=depthFrame, text= " depth_info_topic ")
 depth_topiclabel.grid(row=1, column=1, sticky="ew", padx=5, pady=5)
 depth_topic_convert = Button(master=depthFrame,text="Change",command=depth_topicadd)
 depth_topic_convert.grid(row=1, column=2, sticky="ew", padx=5, pady=5)
