@@ -18,7 +18,7 @@
   <arg name="stereo"                    default="false"/>
   <arg     if="$(arg stereo)" name="depth"  default="false"/>
   <arg unless="$(arg stereo)" name="depth"  default="true"/>
- 
+  <arg name = "user" default="dan"/>
   <!-- Choose visualization -->
   <arg name="rtabmapviz"              default="true" /> 
   <arg name="rviz"                    default="false" />
@@ -370,5 +370,5 @@
     <param name="voxel_size"  type="double" value="0.0"/>
     <param name="approx_sync" type="bool"   value="$(arg approx_sync)"/>
   </node>
-
+  <node name="record_topics_for_verification" pkg="rosbag" type="record" args=" -o $(find rtabmap_ros)/bagfile/default_record $(arg camera_info_topic) $(arg depth_topic) $(arg rgb_topic)"/>
 </launch>

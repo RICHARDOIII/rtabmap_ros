@@ -1,7 +1,12 @@
 from tkinter import *
+import shlex
+import subprocess
+import os
+def quit():
 
-def donothing():
-    pass
+    s=shlex.split(disp_['text'])
+    stream = os.popen(disp_["text"])
+    stream
 def replace_queue():
     s=disp_["text"]
     arg= s.split()
@@ -145,7 +150,7 @@ def depth_topicadd():
         disp_["text"]=" ".join(arg)+added
 
 root = Tk()
-
+root.title("SENIOR DESIGN")
 menu = Menu(root)
 root.config(menu=menu)
 root.resizable(width=FALSE, height=TRUE)
@@ -219,7 +224,7 @@ bdlabel = Label(master=VizFrame, text= " Delete Maps Stored ")
 bdlabel.grid(row=4, column=2, sticky="ew", padx=5, pady=5)
 ################################ CAMERA #######################################
 
-#rbgd sync
+#rbgd sync    root.destroy()
 btn_rbgd = Button(master=cameraFrame,text="Yes",command=rbgd_synct)
 btn_rbgd.grid(row=1, column=0, sticky="ew", padx=5, pady=5)
 btn_rbgd = Button(master=cameraFrame,text="No",command=rbgd_syncf)
@@ -263,7 +268,7 @@ OdomRlabel = Label(master=odomFrame, text= " Odom/ResetCountdown ")
 OdomRlabel.grid(row=1, column=1, sticky="ew", padx=5, pady=5)
 OdomR_convert = Button(master=odomFrame,text="Change",command=OdomRadd)
 OdomR_convert.grid(row=1, column=2, sticky="ew", padx=5, pady=5)
-OdomR_dlabel = Label(master=odomFrame,wraplength=220, text= " Frames dropped allowed before Map reset")
+OdomR_dlabel = Label(master=odomFrame,wraplength=180, text= " Frames dropped allowed before Map reset")
 OdomR_dlabel.grid(row=1, column=3, sticky="ew", padx=5, pady=5)
 #GFTT/MinDistance
 
@@ -273,11 +278,11 @@ GFTTlabel = Label(master=odomFrame, text= " GFTT/MinDistance ")
 GFTTlabel.grid(row=2, column=1, sticky="ew", padx=5, pady=5)
 GFTT_convert = Button(master=odomFrame,text="Change",command=GFTTadd)
 GFTT_convert.grid(row=2, column=2, sticky="ew", padx=5, pady=5)
-GFTT_dlabel = Label(master=odomFrame,wraplength=220, text= " Changes how refined the pointcloud")
+GFTT_dlabel = Label(master=odomFrame,wraplength=180, text= " Changes how refined the pointcloud")
 GFTT_dlabel.grid(row=2, column=3, sticky="ew", padx=5, pady=5)
 
 ###################### DEPTH ##########
-depth_topic_entry= Entry(master=depthFrame,width=10)
+depth_topic_entry= Entry(master=depthFrame,width=10,text="")
 depth_topic_entry.grid(row=1, column=0, sticky="ew", padx=5, pady=5)
 depth_topiclabel = Label(master=depthFrame, text= " depth_info_topic ")
 depth_topiclabel.grid(row=1, column=1, sticky="ew", padx=5, pady=5)
@@ -291,6 +296,9 @@ depth_topic_dlabel.grid(row=1, column=3, sticky="ew", padx=5, pady=5)
 
 
 ################################## DISP FRAME #########################
-disp_= Label(master= dispFrame, wraplength=550, text =" roslaunch rtabmap_ros rtabmap.launch")
+disp_= Label(master= dispFrame, wraplength=550, text =" roslaunch rtabmap_ros rtabmap.launch user:=$USER")
 disp_.grid(row=1, column=0, sticky="ew", padx=5, pady=5)
+run_convert = Button(master=dispFrame,text="Run",command=quit)
+run_convert.grid(row=2, column=0, sticky="ew", padx=5, pady=5)
+
 root.mainloop()
