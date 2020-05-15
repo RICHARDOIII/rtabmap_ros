@@ -32,6 +32,8 @@ https://wiki.ros.org/ROS/Tutorials/InstallingandConfiguringROSEnvironment
 
 execute the python script in the directory .
 
+### python3 testexe.py
+
 
 
 
