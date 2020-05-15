@@ -1,19 +1,31 @@
 # For Senior Design and and anyone who else that wants to work on this
 ## Start by installing ROS
 https://wiki.ros.org/melodic/Installation/Ubuntu
+
 Note: melodic is your distro and used to find all  
+
 ex: ros-melodic-rtabmap_ros
+
 Update and Upgrade your packages and where they would download from taken care of , very important
+
 Find a ROS Plugin for your Sensor
+
 ### Kinect
+
 sudo apt-get install ros-melodic-freenect-launch ros-melodic-openni-launch libfreenect-dev
 ### Kinect 2
+
 https://github.com/code-iai/iai_kinect2
+
 More options shown in this article by rtabmap_ros : https://wiki.ros.org/rtabmap_ros/Tutorials/HandHeldMapping
 
+
 ### install tkinker (python library for GUI)
+
 ### CREATE WORKSPACE
+
 https://wiki.ros.org/ROS/Tutorials/InstallingandConfiguringROSEnvironment
+
 ### Install rtabmap_ros using below instructions given by introlab
 
 # NOTE: IF YOU INSTALL BY DEBIAN OVER BY SOURCE, IT ADDS CERTAIN FLAGS YOU MAY NOT NOT WANT LATER, HIGHLY RECOMMEND BUILD WITH SOURCE. CHOOSE ONE OR THE OTHER >>>> HAVING BOTH CREATES MEMORY LEAKS
