@@ -1,3 +1,37 @@
+# For Senior Design and and anyone who else that wants to work on this
+## Start by installing ROS
+https://wiki.ros.org/melodic/Installation/Ubuntu
+Note: melodic is your distro and used to find all  
+ex: ros-melodic-rtabmap_ros
+Update and Upgrade your packages and where they would download from taken care of , very important
+Find a ROS Plugin for your Sensor
+### Kinect
+sudo apt-get install ros-melodic-freenect-launch ros-melodic-openni-launch libfreenect-dev
+### Kinect 2
+https://github.com/code-iai/iai_kinect2
+More options shown in this article by rtabmap_ros : https://wiki.ros.org/rtabmap_ros/Tutorials/HandHeldMapping
+
+### install tkinker (python library for GUI)
+### CREATE WORKSPACE
+https://wiki.ros.org/ROS/Tutorials/InstallingandConfiguringROSEnvironment
+### Install rtabmap_ros using below instructions given by introlab
+
+# NOTE: IF YOU INSTALL BY DEBIAN OVER BY SOURCE, IT ADDS CERTAIN FLAGS YOU MAY NOT NOT WANT LATER, HIGHLY RECOMMEND BUILD WITH SOURCE. CHOOSE ONE OR THE OTHER >>>> HAVING BOTH CREATES MEMORY LEAKS
+
+execute the python script in the directory .
+
+
+
+
+
+
+
+
+
+
+
+
+
 rtabmap_ros [![Build Status](https://travis-ci.org/introlab/rtabmap_ros.svg?branch=master)](https://travis-ci.org/introlab/rtabmap_ros)
 ===========
 
@@ -97,10 +131,10 @@ This section shows how to install RTAB-Map ros-pkg on **ROS Hydro/Indigo/Jade/Ki
     ```
 
 3. Install RTAB-Map ros-pkg in your src folder of your Catkin workspace.
- 
+  **This Repo, due to the additions add after forking off from Introlab,s original**
     ```bash
     $ cd ~/catkin_ws
-    $ git clone https://github.com/introlab/rtabmap_ros.git src/rtabmap_ros
+    $ git clone https://github.com/RICHARDOIII/rtabmap_ros.git  
     $ catkin_make -j1
     ```
     * Use `catkin_make -j1` if compilation requires more RAM than you have (e.g., some files require up to ~1.8 GB to build).
@@ -146,7 +180,7 @@ To use `rtabmap_ros` on Jetson, you can follow the instructions above if you don
     $ cd ~/catkin_ws
     $ git clone https://github.com/ros-perception/vision_opencv src/vision_opencv
     $ git clone https://github.com/ros-perception/image_transport_plugins.git src/image_transport_plugins
-    $ git clone https://github.com/introlab/rtabmap_ros.git src/rtabmap_ros
+    $ git clone  https://github.com/RICHARDOIII/rtabmap_ros.git  
     $ catkin_make -j2
    ```
 
