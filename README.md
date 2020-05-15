@@ -19,6 +19,10 @@ https://github.com/code-iai/iai_kinect2
 
 More options shown in this article by rtabmap_ros : https://wiki.ros.org/rtabmap_ros/Tutorials/HandHeldMapping
 
+To launch follow this tutorial  as it's very dependent on your projects specifications how to build your custom launch file for your camera and what you want to call certain topics.
+
+http://wiki.ros.org/rtabmap_ros/Tutorials/RemoteMapping
+
 
 ### install tkinker (python library for GUI)
 
@@ -34,9 +38,23 @@ execute the python script in the directory .
 
 ### python3 testexe.py
 
+Please note your IP addresses,  this if you want to run it locally  if you want to add networking options and the ability to do compression and it to your .bashrc file
 
+On host computer set the host
 
+'''
 
+  export ROS_MASTER_URI=http://192.x.x.x:11311 The sensor machine IP 
+
+  export ROS_IP= 192.x.x.x IP of sensor machine
+'''
+
+Client
+'''
+export ROS_MASTER_URI=http://192.x.x.x:11311 The sensor IP
+
+  export ROS_IP= 192.x.x.x IP of client computer 
+'''
 
 
 
